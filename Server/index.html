@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head><title>Hello world</title></head>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      
+      socket.on('join_room',function(data){
+          var status= document.getElementById("status");
+        
+          var texto = document.createTextNode(data+"------->");
+          status.appendChild(texto);
+      });
+
+      socket.on('leave_room',function(data){
+          var status= document.getElementById("status");
+          
+
+          var texto = document.createTextNode(data+"------->");
+          status.appendChild(texto);
+      });
+      
+      socket.on('send_message',function(data){
+          var status= document.getElementById("status");
+
+          var texto = document.createTextNode(data+"------->");
+          status.appendChild(texto);
+      });
+
+
+      function enter() {
+        var d = new Date();
+        var n = d.getTime();
+        socket.emit('join_room', "Gato");
+
+        document.getElementById("enter").style.visibility = "hidden";
+        document.getElementById("leave").style.visibility = "visible";
+      }
+      function leave() {
+        socket.emit('leave_room');
+        document.getElementById("enter").style.visibility = "visible";
+        document.getElementById("leave").style.visibility = "hidden";
+      }
+      function send() {
+        socket.emit('send_message', "pc");
+      }
+
+    </script>
+    <body>
+
+      <p id="status"></p>
+      <button id="enter" onclick="enter()">Entrar</button>
+      <button id="send" onclick="send()">Mandar msg</button>
+      <button id="leave" onclick="leave()">Sair</button>
+    </body>
+</html>
